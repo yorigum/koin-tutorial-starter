@@ -24,7 +24,8 @@ package com.raywenderlich.markme.utils
 
 import android.os.Parcelable
 import com.raywenderlich.markme.R
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 enum class ClassSection(val sectionName: String, val color: Int) : Parcelable {

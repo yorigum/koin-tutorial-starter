@@ -23,32 +23,30 @@
 package com.raywenderlich.markme.main.view.ui
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.raywenderlich.markme.R
-import com.raywenderlich.markme.feature.view.ui.FeatureActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.raywenderlich.markme.databinding.ActivityMainBinding
 import com.raywenderlich.markme.main.MainContract
-import com.raywenderlich.markme.main.presenter.MainPresenter
 import com.raywenderlich.markme.utils.ClassSection
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.startActivity
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 const val FEATURE_CATEGORY = "categoryName"
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
-    private val cardAtt by lazy { activity_main__cardview__attendance }
-    private val cardGrading by lazy { activity_main__cardview__grading }
-    private val mainPresenter: MainContract.Presenter by lazy { MainPresenter(this) }
+    private val mainPresenter: MainContract.Presenter by inject()
 
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        cardAtt.setOnClickListener {
+        binding.activityMainCardviewAttendance.setOnClickListener {
             mainPresenter.onAttendanceOptionClick()
         }
-        cardGrading.setOnClickListener {
+       binding.activityMainCardviewGrading.setOnClickListener {
             mainPresenter.onGradingOptionClick()
         }
     }
@@ -57,11 +55,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         when (section) {
             ClassSection.ATTENDANCE -> {
                 Timber.d("'Attendance' clicked")
-                startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.ATTENDANCE)
+              //  startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.ATTENDANCE)
             }
             ClassSection.GRADING -> {
                 Timber.d("'Grading' clicked")
-                startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.GRADING)
+                //startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.GRADING)
             }
         }
     }

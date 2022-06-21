@@ -22,19 +22,51 @@
 
 package com.raywenderlich.markme.feature.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.raywenderlich.markme.R
+import androidx.recyclerview.widget.RecyclerView
+import com.raywenderlich.markme.databinding.CardFeatureGradingBinding
 import com.raywenderlich.markme.model.Student
-import kotlinx.android.synthetic.main.card_feature_grading.view.*
 
-class FeatureGradingAdapter(val dataList: List<Student>?)
-    : RecyclerView.Adapter<FeatureGradingAdapter.ViewHolder>(), RwAdapter<Student> {
+class FeatureGradingAdapter(val dataList: List<Student>?) :
+    RecyclerView.Adapter<FeatureGradingAdapter.CardGradingeHolder>(), RwAdapter<Student> {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    override fun getItemCount(): Int = dataList?.size ?: 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardGradingeHolder {
+        val itemBinding =
+            CardFeatureGradingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CardGradingeHolder(itemBinding)
+    }
+
+    override fun onBindViewHolder(holder: CardGradingeHolder, position: Int) {
+        val student: Student = dataList?.get(position)!!
+        holder.bind(student)
+    }
+
+    class CardGradingeHolder(private val itemBinding: CardFeatureGradingBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+        fun bind(student: Student) {
+            itemBinding.apply {
+
+                cardFeatGradingLabelName.text = student.name
+
+                cardFeatGradingEdittextGrade.apply {
+                    val valueGrade = if (student.grade != -1) student.grade.toString() else ""
+                    setText(valueGrade)
+                    setOnFocusChangeListener { _, hasFocus ->
+                        if (!hasFocus) {
+                            student.grade = text.toString().toInt()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun getData(): List<Student>? = dataList
+
+/*    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val labelName: TextView? = itemView.card_feat_grading__label__name
         val etGrade: TextView? = itemView.card_feat_grading__edittext__grade
     }
@@ -61,5 +93,5 @@ class FeatureGradingAdapter(val dataList: List<Student>?)
         }
     }
 
-    override fun getData(): List<Student>? = dataList
+    override fun getData(): List<Student>? = dataList*/
 }

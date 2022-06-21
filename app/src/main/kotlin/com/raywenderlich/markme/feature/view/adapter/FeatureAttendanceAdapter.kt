@@ -22,39 +22,44 @@
 
 package com.raywenderlich.markme.feature.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import com.raywenderlich.markme.R
+import androidx.recyclerview.widget.RecyclerView
+import com.raywenderlich.markme.databinding.CardFeatureAttendanceBinding
 import com.raywenderlich.markme.model.Student
-import kotlinx.android.synthetic.main.card_feature_attendance.view.*
 
-class FeatureAttendanceAdapter(val dataList: List<Student>?)
-    : RecyclerView.Adapter<FeatureAttendanceAdapter.ViewHolder>(), RwAdapter<Student> {
+class FeatureAttendanceAdapter(private val dataList: List<Student>?) :
+    RecyclerView.Adapter<FeatureAttendanceAdapter.CardAttedanceHolder>(), RwAdapter<Student> {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkBoxItem: CheckBox? = itemView.card_feat_attendance__checkbox__student
-    }
 
     override fun getItemCount(): Int = dataList?.size ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewRow = LayoutInflater.from(parent.context).inflate(R.layout.card_feature_attendance, parent, false)
-        return ViewHolder(viewRow)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardAttedanceHolder {
+        val itemBinding =
+            CardFeatureAttendanceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CardAttedanceHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.checkBoxItem?.apply {
-            text = dataList?.let { it[position].name }
-            isChecked = dataList?.let { it[position].attendance } ?: false
+    override fun onBindViewHolder(holder: CardAttedanceHolder, position: Int) {
+        val student: Student = dataList?.get(position)!!
+        holder.bind(student)
+    }
 
-            setOnClickListener {
-                dataList?.get(position)?.attendance = isChecked
+    class CardAttedanceHolder(private val itemBinding: CardFeatureAttendanceBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+        fun bind(student: Student) {
+            itemBinding.apply {
+                itemBinding.cardFeatAttendanceCheckboxStudent.text = student.name
+                itemBinding.cardFeatAttendanceCheckboxStudent.isChecked = student.attendance
+
+                val isChecked = itemBinding.cardFeatAttendanceCheckboxStudent.isChecked
+                itemBinding.cardFeatAttendanceCheckboxStudent.setOnClickListener {
+                    student.attendance = isChecked
+                }
             }
         }
     }
 
     override fun getData(): List<Student>? = dataList
+
 }

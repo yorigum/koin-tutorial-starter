@@ -22,7 +22,7 @@
 
 package com.raywenderlich.markme.model.database
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.raywenderlich.markme.model.Student
 
 @Dao
