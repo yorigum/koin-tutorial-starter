@@ -22,12 +22,15 @@
 
 package com.raywenderlich.markme.main.view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.raywenderlich.markme.databinding.ActivityMainBinding
+import com.raywenderlich.markme.feature.view.ui.FeatureActivity
 import com.raywenderlich.markme.main.MainContract
 import com.raywenderlich.markme.utils.ClassSection
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 const val FEATURE_CATEGORY = "categoryName"
@@ -55,11 +58,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         when (section) {
             ClassSection.ATTENDANCE -> {
                 Timber.d("'Attendance' clicked")
-              //  startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.ATTENDANCE)
+                val intent = Intent(this, FeatureActivity::class.java).apply {
+                    FEATURE_CATEGORY to ClassSection.ATTENDANCE
+                }
+                startActivity(intent)
             }
             ClassSection.GRADING -> {
                 Timber.d("'Grading' clicked")
-                //startActivity<FeatureActivity>(FEATURE_CATEGORY to ClassSection.GRADING)
+                val intent = Intent(this, FeatureActivity::class.java).apply {
+                    FEATURE_CATEGORY to ClassSection.GRADING
+                }
+                startActivity(intent)
             }
         }
     }

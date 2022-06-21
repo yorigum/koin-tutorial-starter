@@ -22,8 +22,13 @@
 
 package com.raywenderlich.markme.splash.view.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import com.raywenderlich.markme.feature.view.ui.FeatureActivity
+import com.raywenderlich.markme.main.view.ui.FEATURE_CATEGORY
+import com.raywenderlich.markme.main.view.ui.MainActivity
 import com.raywenderlich.markme.splash.SplashContract
+import com.raywenderlich.markme.utils.ClassSection
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -36,7 +41,8 @@ class SplashActivity : AppCompatActivity(), SplashContract.View {
     override fun onResume() {
         super.onResume()
 
-      //  startActivity<MainActivity>()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         splashPresenter.onViewCreated()
     }
 

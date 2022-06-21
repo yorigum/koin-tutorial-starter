@@ -24,13 +24,17 @@ package com.raywenderlich.markme.feature.view.ui
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.markme.databinding.ActivityFeatureBinding
 import com.raywenderlich.markme.feature.FeatureContract
+import com.raywenderlich.markme.feature.view.adapter.FeatureAttendanceAdapter
+import com.raywenderlich.markme.feature.view.adapter.FeatureGradingAdapter
 import com.raywenderlich.markme.main.view.ui.FEATURE_CATEGORY
 import com.raywenderlich.markme.model.Student
 import com.raywenderlich.markme.model.studentList
@@ -41,7 +45,9 @@ class FeatureActivity : AppCompatActivity(), FeatureContract.View<Student> {
 
    private lateinit var binding: ActivityFeatureBinding
     private val classList = studentList.map { Student(uid = null, name = it, attendance = false, grade = -1) }
-//    private val featurePresenter : FeatureContract.Presenter by inject { parametersOf(this) }
+/*
+  private val featurePresenter : FeatureContract.Presenter by inject { parametersOf(this) }
+*/
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,15 +72,15 @@ class FeatureActivity : AppCompatActivity(), FeatureContract.View<Student> {
         }
     }
 
-   /* override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             android.R.id.home -> {
                 NavUtils.navigateUpFromSameTask(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }*/
+    }
 
     override fun showToastMessage(msg: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -105,12 +111,12 @@ class FeatureActivity : AppCompatActivity(), FeatureContract.View<Student> {
     private fun setupRecyclerView(feature: ClassSection) {
         binding.activityFeatureRvList.apply {
             layoutManager = LinearLayoutManager(this@FeatureActivity, LinearLayout.VERTICAL, false)
-//            adapter = when (feature) {
-//                ClassSection.ATTENDANCE ->
-//                   // FeatureAttendanceAdapter(dataList = classList)
-//                ClassSection.GRADING ->
-//                   // FeatureGradingAdapter(dataList = classList)
-//            }
+           adapter = when (feature) {
+                ClassSection.ATTENDANCE ->
+                    FeatureAttendanceAdapter(dataList = classList)
+                ClassSection.GRADING ->
+                    FeatureGradingAdapter(dataList = classList)
+            }
         }
     }
 
